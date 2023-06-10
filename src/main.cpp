@@ -5,7 +5,8 @@
 #include "SSD1306_Defs.h"
 #include "utilities.h"
 
-#define ANALOG_INPUT A0
+#define ANALOG_INPUT PA0
+#define ANALOG_OUTPUT PA1
 
 // Objects that links the loop and setup function
 namespace global {
@@ -23,6 +24,8 @@ void setup() {
     utilities::blinkBreakpoint(100);
   // Set the color of the oled screen
   global::oled->setTextColor(SSD1306_WHITE);
+  // Set A1 as an output
+  pinMode(ANALOG_OUTPUT, OUTPUT);
 }
 
 void loop() {
@@ -33,6 +36,7 @@ void loop() {
   global::oled->setTextSize(2);
   global::oled->print("Reading\n");
   global::analogReading = analogRead(ANALOG_INPUT);
+  analogWrite(ANALOG_OUTPUT, global::analogReading/4);
   global::oled->printf("%d", global::analogReading); 
   global::oled->display();
   delay(500);
